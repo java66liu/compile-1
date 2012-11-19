@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>编译原理>>词法分析器</title>
+	 <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	 <script src="js/jquery.js"></script>
+	 <script src="js/bootstrap.min.js"></script>
+	 <style type="text/css">
+ 			.show{
+ 				height: 500px;
+ 				overflow-y: scroll; 
+ 			}
+
+	 </style>
+</head>
+<body>
+	<div class="container">
+		<h1>编译原理>>词法分析器</h1>
+
+		<textarea class="ori_code span7 well" rols="30" rows="25" placeholder="please input the original code"></textarea>
+
+		<div class="show span4 well">the results:</div>
+	</div>
+		<script type="text/javascript">
+		// 保留字 => 1
+		var keep_word	=	[ "if", "int", "for", "while", "do", "return","continue" ];
+		// 	运算符 => 2
+		var operator	=	[ "+", "-", "*", "/", "=", ">", "<", "++", "--", ">=", "<=", "!="];
+		//  分隔符 => 5
+		var symbol		=	[",", ":", ";", "(", ")", "{", "}" ]; 
+
+		$(".ori_code").keyup(function(e) {
+
+				res	=	""; 
+				value = $(".ori_code").val();
+				for(i=0; i<value.length ;)
+				{
+					//alert("="+value[i]+"=");
+
+					if(jQuery.inArray(value[i], operator) >= 0)
+					{
+						res += "(4,\""+value[i]+"\")"+"<br />";
+						i++;
+					}
+					else if(jQuery.inArray(value[i], symbol) >= 0)
+					{
+						res += "(5,\""+value[i]+"\")"+"<br />";
+						i++;
+					}
+					else if(value[i] >= "0" && value[i] <= "9")
+					{
+						number = [];
+						k = 0;
+
+						while(value[i] >= "0" && value[i] <= "9")
+							number[k++] = value[i++]
+
+						res += "(3,\""+number.join("")+"\")"+"<br />";
+					}
+					else if((value[i] >= 'a' && value[i] <= 'z') || (value[i] >= 'A' && value[i] <= 'Z'))
+					{
+						word =	[]; 
+						t = 0;
+
+						while((value[i] >= 'a' && value[i] <= 'z') || (value[i] >= 'A' && value[i] <= 'Z') || (value[i] >= '0' && value[i] <= '9'))
+							word[t++] = value[i++];
+						word = word.join("");
+
+						if(jQuery.inArray(word, keep_word) >= 0)
+							res += "(1,\""+word+"\")"+"<br />";
+						else
+							res += "(2,\""+word+"\")"+"<br />";
+					}
+					else
+					{
+						i++;
+					}
+				}
+				$(".show").html(res);
+		});
+
+	</script>
+</body>
+
+</html>
